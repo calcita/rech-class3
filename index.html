@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>R aplicado a la ECH</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="  Creative Commons Attribution 4.0 International License" />
+    <link href="index_files/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# R aplicado a la ECH
+## Setiembre 2020 <br> Gabriela Mathieu
+### <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /> <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+
+---
+
+
+
+
+
+
+
+
+# ¿Qué haremos hoy?
+
+- Repaso del segundo taller
+&lt;br&gt;&lt;br&gt;
+--
+
+- Importar archivos sav y dta (haven)
+&lt;br&gt;&lt;br&gt;
+--
+
+- Usar etiquetas en variables categóricas (labelled)
+&lt;br&gt;&lt;br&gt;
+--
+
+- Encadenar funciones: operador %&gt;%
+&lt;br&gt;&lt;br&gt;
+--
+
+- Ejercicios
+
+&lt;!-- - Crear una variable a partir de ciertas condiciones: case_when() --&gt;
+&lt;!-- &lt;br&gt; --&gt;
+&lt;!-- -- --&gt;
+
+&lt;!-- - Recodificar y renombrar variables --&gt;
+&lt;!-- &lt;br&gt; --&gt;
+&lt;!-- -- --&gt;
+
+
+
+---
+class: inverse, center, middle
+# TidyveRse
+
+---
+class: hide-logo
+# tidyverse
+
+.pull-left[
+
+&lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;Conjunto de paquetes&lt;/span&gt; para:
+&lt;br&gt;&lt;br&gt;
+
+
+&lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;Importar&lt;/span&gt;
+&lt;br&gt;&lt;br&gt;
+
+&lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;Limpiar y transformar&lt;/span&gt;
+&lt;br&gt;&lt;br&gt;
+
+&lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;Procesar y analizar&lt;/span&gt;
+&lt;br&gt;&lt;br&gt;
+
+&lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;Visualizar&lt;/span&gt;
+
+ &lt;!-- procesar, analizar y visualizar datos. --&gt;
+]
+.pull-rigth[
+&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyverse.png" width="300px" /&gt;
+Proporciona una forma unificada, armoniosa y más poderosa de trabajar con datos que la que ofrece el paquete base.
+]
+
+
+---
+class: hide-logo
+# Importación/Exportación de archivos
+
+.pull-left[
+
+Archivos de &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;texto plano&lt;/span&gt; (txt, csv, tsv)
+
+
+&lt;!-- ![](img/readr.png){width=180px} --&gt;
+&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/readr.png" width="120px" style="display: block; margin: auto;" /&gt;
+
+Formatos &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;propietarios&lt;/span&gt; (dta, sav)
+
+&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/haven.png" width="120px" style="display: block; margin: auto;" /&gt;
+
+]
+.pull-rigth[
+&lt;br&gt;
+Archivos &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;Excel&lt;/span&gt; (xls, xlsx)
+
+&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/readxl.png" width="120px" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+
+Paquete jsolite, archivos &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;JSON&lt;/span&gt; (JavaScript Object Notation)
+&lt;img src="img/json.png" width="120px" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+class: hide-logo
+# Manipulación de datos
+
+.pull-left[
+
+&lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;Trasformar &lt;/span&gt; estructura de datos 
+
+&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="140px" style="display: block; margin: auto;" /&gt;
+
+Manipular &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;texto&lt;/span&gt;
+
+&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="140px" style="display: block; margin: auto;" /&gt;
+
+]
+.pull-rigth[
+&lt;br&gt;
+Manipular &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;fechas&lt;/span&gt; 
+
+&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/lubridate.png" width="140px" style="display: block; margin: auto;" /&gt;
+
+
+Manipular &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;data frame&lt;/span&gt; 
+
+&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/dplyr.png" width="140px" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+class: hide-logo
+# Análisis y Visualización de datos
+
+.pull-left[
+&lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;Gráficos y mapas&lt;/span&gt; 
+&lt;br&gt;
+&lt;br&gt;
+
+&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/ggplot2.png" width="250px" style="display: block; margin: auto;" /&gt;
+
+]
+.pull-rigth[
+&lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;Modelización&lt;/span&gt; 
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/broom.png" width="250px" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+class: inverse, center, middle
+# haven
+
+---
+# Importar datos Stata y SPSS
+
+Si usamos get_microdata() solo para descargar los archivos del INE y no exportamos el objeto generado a RData sino a formatos externos a R, es necesario, para leer esos archivos usar el paquete haven.
+&lt;br&gt;&lt;br&gt;
+--
+
+```r
+install.packages("haven") # se instala desde el CRAN
+library(haven) # lo cargo al entorno de trabajo
+```
+
+- El paquete &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;haven es parte de tidyverse&lt;/span&gt; y mejora las prestaciones de su antecesor foreign. 
+&lt;br&gt;&lt;br&gt;
+--
+
+- Permite mantener las &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;etiquetas de las variables y sus valores&lt;/span&gt; al usar la clase double y haven-labelled, haciendo referencia a los números y etiquetas respectivamente.
+
+&lt;!-- https://www.btskinner.io/rworkshop/modules/eda_one.html --&gt;
+---
+class: inverse, center, middle
+# haven::read_spss()
+
+---
+# Importar un archivo sav
+
+La función &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;read_spss()&lt;/span&gt; permite &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;importar un archivo de SPSS en R&lt;/span&gt;. Mantiene las etiquetas de las variables y valores, creando la clase de doble condición haven_labelled y double.
+&lt;br&gt;&lt;br&gt;
+--
+
+También podemos usar la función &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;read_sav()&lt;/span&gt;, que es un &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;alias&lt;/span&gt; de la anterior.
+&lt;br&gt;&lt;br&gt;
+--
+
+Abrimos el proyecto donde tenemos los archivos de microdatos y scripts.
+&lt;br&gt;&lt;br&gt;
+--
+
+
+
+```r
+# Leemos el archivo descargado con la función get_microdata() que contiene la base hogares.
+h19 &lt;- read_spss("data/H_2019_Terceros.sav")
+```
+
+```r
+# Exportamos a dta
+write_dta(data = h19, path = "data/hogares_2019.dta")
+```
+
+
+---
+# Ejercicio
+
+
+- Importa el archivo de la base de hogares y personas en formato dta, y guarda en un objeto llamado ech2019. Usar la función read_dta().
+
+- Exporta el objeto en un archivo SPSS. Usar la función write_sav().
+
+---
+class: inverse, center, middle
+# %&gt;%
+
+---
+# Encadenamiento de funciones en lugar de anidación
+
+El operador &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;%&amp;gt;%&lt;/span&gt;, llamado &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;pipe&lt;/span&gt; (significa tubería) permitirá &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;encadenar funciones&lt;/span&gt; en lugar de colocar una dentro de otra sin una a continuación de la otra.
+&lt;br&gt;&lt;br&gt;
+--
+
+- El pipe estructura una secuencia de operaciones sobre los datos de &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;izquierda a derecha&lt;/span&gt;.
+&lt;br&gt;&lt;br&gt;
+--
+
+- A diferencia de la anidación de funciones que implica operaciones de adentro para afuera. 
+&lt;br&gt;&lt;br&gt;
+--
+
+- En lugar de f(x): &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;x %&amp;gt;% f()&lt;/span&gt;
+&lt;br&gt;&lt;br&gt;
+--
+
+---
+# Pipe: atajo de teclado en Linux/Windows
+
+![](img/linux_pipe.png)
+
+---
+# Pipe: atajo de teclado en Mac
+
+![](img/mac_pipe.png)
+---
+# Armar un mate con y sin 'pipe'
+
+El &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;mate&lt;/span&gt; es el &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;data frame&lt;/span&gt;, los &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;verbos&lt;/span&gt; de dplyr (así se llaman a las funciones que vimos) son las acciones que necesitamos para armarlo: poner la yerba, poner un poco de agua, dejarlo hinchar, poner la bombilla, cebar.
+--
+
+
+```r
+# Mate con 'pipe'
+
+mate %&gt;% 
+        poner_yerba() %&gt;%
+        hinchar() %&gt;%
+        colocar_bombilla() %&gt;%
+        cebar()
+```
+
+--
+
+En R base y sin el pipe tendríamos que concatenar estas funciones. Cuando las funciones están concatenadas el orden se obtiene de adentro hacia afuera.
+
+
+```r
+# Mate sin 'pipe'
+
+cebar(colocar_bombilla(hinchar(poner_yerba(mate))))
+```
+
+&lt;!-- [magrittr](https://github.com/tidyverse/magrittr/blob/master/vignettes/magrittr.Rmd) --&gt;
+
+---
+# Rehacemos los ejemplos usando %&gt;%
+
+- Agrupo por barrio y calculo el promedio de precio
+--
+
+- Sin el pipe teníamos:
+
+
+```r
+*summarise(group_by(ech19, nomdpto), promedio_dpto = mean(ht11))
+```
+--
+
+- Con el pipe tenemos:
+
+
+```r
+*ech19 %&gt;%
+* group_by(nomdpto) %&gt;%
+* summarise(promedio_dpto = mean(ht11))
+```
+
+
+---
+class: inverse, center, middle
+# dplyr::ungroup()
+
+
+---
+# Agrupo y desagrupo
+
+- La función &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;ungroup()&lt;/span&gt; sirve para desagrupar un data frame agrupado. 
+--
+
+- Usarla me permite que &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;la información de los grupos no quede guardada en el objeto&lt;/span&gt; (si realización una asignación al resultado), lo cual conllevaría a que todos los demás cálculos se hagan sobre esos grupos.
+--
+
+- No es necesario indicarle ningún argumento. 
+
+
+```r
+ech19 &lt;- ech19 %&gt;%
+* group_by(region_3) %&gt;%
+  mutate(media_y_region = mean(ht11)) %&gt;%
+* ungroup()
+```
+--
+
+Podemos confirmar que la nueva variable promedio toma un valor para cada uno de las categorías de `region_3`.
+
+
+```r
+ech19 %&gt;% count(region_3, media_y_region)
+```
+
+---
+# Desagrupo y agrupo
+
+- La función `ungroup()` permite desagrupar para volver agrupar por otra variable dentro de la misma concatenación de acciones. 
+
+- Luego de calcular la(s) variables vuelvo a desagrupar. 
+
+```r
+ech19 &lt;- ech19 %&gt;%
+* group_by(region_3) %&gt;%
+  mutate(media_y_region = mean(ht11)) %&gt;%
+* ungroup() %&gt;%
+* group_by(dpto) %&gt;%
+  mutate(media_y_dpto = mean(ht11))  %&gt;%
+* ungroup()
+```
+
+---
+# Ejercicio (6')
+
+- Rehacer ejercicio 2 del práctico pasado usando el pipe
+
+ - Calcular el promedio de edad según sexo.
+
+ - Calcular la cantidad de jefas de hogar.
+
+&lt;!-- - Calcular el tamaño medio de los hogares según departamento y luego el  --&gt;
+---
+class: inverse, center, middle
+# labelled
+
+---
+# Manejar etiquetas 
+
+- El paquete [labelled](https://larmarange.github.io/labelled/) se instala cuando instalamos haven. 
+
+- Trae una serie de funciones que nos permiten trabajar fácilmente con variables que tienen etiquetas, por ejemplo, cuando importamos datos de SPSS o STATA con las variables de clase  &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;haven-labelled&lt;/span&gt;.
+
+
+```r
+# install.packages("labelled") # se instala desde el CRAN
+library(labelled)
+```
+
+---
+class: inverse, center, middle
+# labelled::var_label()
+
+
+---
+# Variables &lt;dbl+lbl&gt; 
+
+- Las funciones de dplyr cuando una variable es de clase double y haven-labelled solo muestra los valores y no las etiquetas, por ejemplo, cuando hacemos una tabla con la función count().
+
+Para &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;ver las etiquetas de la variable&lt;/span&gt; usamos la función &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;var_label()&lt;/span&gt;. Ahora que sabemos usar el pipe (%&gt;%), conviene usarlo al final de la cadena de comandos.
+
+
+```r
+## muestra las etiquetas de un grupo de variables
+ech19 %&gt;%
+    select(c2, c3, c4) %&gt;%
+    var_label()
+```
+
+```
+$c2
+[1] "Material predominante en las paredes externas"
+
+$c3
+[1] "Material predominante en el techo"
+
+$c4
+[1] "Material predominante en los pisos"
+```
+---
+class: inverse, center, middle
+# labelled::val_labels()
+
+
+---
+# Variables &lt;dbl+lbl&gt; 
+
+Para ver las etiquetas de los valores usamos la función &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;val_labels()&lt;/span&gt;. 
+
+
+```r
+## see value labels for bysex
+ech19 %&gt;%
+  select(region_4) %&gt;%
+  val_labels()
+```
+
+```
+$region_4
+                                         Montevideo 
+                                                  1 
+   Interior - Localidades de 5.000 habitantes o más 
+                                                  2 
+Interior - Localidades de menos de 5.000 habitantes 
+                                                  3 
+                                         Zona rural 
+                                                  4 
+```
+
+---
+class: inverse, center, middle
+# haven::as_factor()
+
+---
+# Mostrar etiquetas en tablas 
+
+La función as_factor() combinada con count() permite mostrar las&lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt; etiquetas al hacer una tabla&lt;/span&gt;.
+
+
+```r
+ech19 %&gt;%
+  count(region_4) %&gt;% 
+  as_factor()
+```
+
+```
+# A tibble: 4 x 2
+  region_4                                                n
+  &lt;fct&gt;                                               &lt;int&gt;
+1 Montevideo                                          38207
+2 Interior - Localidades de 5.000 habitantes o más    50854
+3 Interior - Localidades de menos de 5.000 habitantes 12019
+4 Zona rural                                           6791
+```
+
+---
+&lt;!-- Now we can see what the numbers represent. Why aren’t there any counts for the three missing labels, the ones with braces, while there are a number of NA values? Checking how the labels are assigned using the val_labels() function… --&gt;
+
+
+&lt;!-- ## table of parental education levels --&gt;
+&lt;!-- table(as_factor(df$bypared), as_factor(df$bysex)) --&gt;
+
+&lt;!-- Para hacer una tabla de doble entrada, podemos combinar group_by() y count() --&gt;
+
+&lt;!-- ```{r eval = FALSE} --&gt;
+&lt;!-- df %&gt;% --&gt;
+&lt;!--     group_by(bysex) %&gt;% --&gt;
+&lt;!--     count(bypared) %&gt;% --&gt;
+&lt;!--     as_factor() --&gt;
+&lt;!-- ``` --&gt;
+
+&lt;!-- Para hacer una tabla más parecida la que podemos hacer con base R, podemos usar la función spread() del paquete tidyr. --&gt;
+
+&lt;!-- ```{r eval = FALSE} --&gt;
+&lt;!-- ## spread to look like other table --&gt;
+&lt;!-- df %&gt;% --&gt;
+&lt;!--     group_by(bysex) %&gt;% --&gt;
+&lt;!--     count(bypared) %&gt;% --&gt;
+&lt;!--     as_factor() %&gt;% --&gt;
+&lt;!--     spread(bysex, n) --&gt;
+&lt;!-- ``` --&gt;
+
+
+&lt;!-- library(devtools) --&gt;
+&lt;!-- install_github('&lt;github handle&gt;/&lt;repo name&gt;') --&gt;
+
+&lt;!-- --- --&gt;
+&lt;!-- # Calculo una variable a nivel de grupos --&gt;
+
+&lt;!-- - Además, la función  &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;ungroup()&lt;/span&gt;  me permite encadenar dos agrupaciones diferentes y realizar un cálculo para cada una, como en el ejemplo que sigue.  --&gt;
+
+&lt;!-- ```{r} --&gt;
+&lt;!-- ech19 &lt;- ech19 %&gt;% --&gt;
+&lt;!--   group_by(numero) %&gt;% #&lt;&lt; --&gt;
+&lt;!--   mutate(promedio = max(e27)) %&gt;% --&gt;
+&lt;!--   ungroup() %&gt;% #&lt;&lt; --&gt;
+&lt;!--   group_by(dpto) %&gt;% #&lt;&lt; --&gt;
+&lt;!--   mutate(maximo = mean(price)) %&gt;% --&gt;
+&lt;!--   ungroup() #&lt;&lt; --&gt;
+&lt;!-- ``` --&gt;
+
+&lt;!-- Debo recordar de desagrupar si no quiero que el objeto ech19 guarde la información de la agrupación. --&gt;
+
+&lt;!-- --- --&gt;
+&lt;!-- class: inverse, center, middle --&gt;
+&lt;!-- # dplyr::recode() --&gt;
+
+&lt;!-- --- --&gt;
+&lt;!-- # Recodificar una variable --&gt;
+
+&lt;!-- - La función &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;recode()&lt;/span&gt; permite recodificar una variable.  --&gt;
+&lt;!-- -- --&gt;
+
+&lt;!-- - recode(&lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;&amp;lt;df&amp;gt;&lt;/span&gt;, &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;&amp;lt;variable&amp;gt;&lt;/span&gt;, &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;&amp;lt;categoria_actual&amp;gt;&lt;/span&gt; = &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;&amp;lt;categoria_nueva&amp;gt;&lt;/span&gt;) --&gt;
+&lt;!-- -- --&gt;
+
+&lt;!--  - Recodifico la variable `room_type`, pasando sus categorías a español. --&gt;
+
+&lt;!-- ```{r} --&gt;
+&lt;!-- ech19 &lt;- ech19 %&gt;% --&gt;
+&lt;!--               mutate(room_type_sp = recode(room_type, #&lt;&lt; --&gt;
+&lt;!--                                        "Entire home/apt" = "Casa/Apto entero",#&lt;&lt; --&gt;
+&lt;!--                                        "Hotel room" = "Habitación hotel",#&lt;&lt; --&gt;
+&lt;!--                                        "Private room" = "Habitación privada",#&lt;&lt; --&gt;
+&lt;!--                                        "Shared room" = "Habitación compartida"))#&lt;&lt;  --&gt;
+&lt;!-- ``` --&gt;
+
+&lt;!-- - Chequeo --&gt;
+
+&lt;!-- ```{r eval = FALSE} --&gt;
+&lt;!-- ech19 %&gt;% count(room_type_sp) --&gt;
+&lt;!-- ``` --&gt;
+
+&lt;!-- --- --&gt;
+&lt;!-- class: inverse, center, middle --&gt;
+&lt;!-- # dplyr::rename() --&gt;
+
+&lt;!-- --- --&gt;
+&lt;!-- # rename --&gt;
+
+&lt;!-- - La función &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;rename()&lt;/span&gt; renombra variables. --&gt;
+&lt;!-- &lt;br&gt;&lt;br&gt; --&gt;
+&lt;!-- -- --&gt;
+
+&lt;!-- - rename(&lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;&amp;lt;df&amp;gt;&lt;/span&gt;, &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;&amp;lt;nuevo&amp;gt;&lt;/span&gt; = &lt;span style=" font-weight: bold;    border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #b3e2cd !important;" &gt;&amp;lt;actual&amp;gt;&lt;/span&gt;)  --&gt;
+&lt;!-- &lt;br&gt;&lt;br&gt; --&gt;
+&lt;!-- -- --&gt;
+
+&lt;!-- - Renombro las variables latitude  y longitude --&gt;
+&lt;!-- &lt;br&gt;&lt;br&gt; --&gt;
+&lt;!-- -- --&gt;
+
+&lt;!-- ```{r} --&gt;
+&lt;!-- ech19 &lt;- ech19 %&gt;% --&gt;
+&lt;!--   rename(lat = latitude, #&lt;&lt; --&gt;
+&lt;!--          lon = longitude) #&lt;&lt;  --&gt;
+&lt;!-- ``` --&gt;
+
+&lt;!-- --- --&gt;
+&lt;!-- class: inverse, center, middle --&gt;
+&lt;!-- # %&lt;&gt;% --&gt;
+
+&lt;!-- --- --&gt;
+&lt;!-- # Pipe de asignación --&gt;
+
+&lt;!-- Para no repetir el nombre del data frame todas las veces --&gt;
+
+&lt;!-- ```{r eval = FALSE} --&gt;
+&lt;!-- ech19 &lt;- ech19 %&gt;% ... --&gt;
+&lt;!-- ``` --&gt;
+
+&lt;!-- - Podemos usar un pipe de asignación que pertenece al paquete magrittr: `%&lt;&gt;%`. --&gt;
+
+&lt;!-- ```{r eval = FALSE} --&gt;
+&lt;!-- ech19 %&lt;&gt;% ... --&gt;
+&lt;!-- ``` --&gt;
+&lt;!-- - Queda menos repetitivo el código pero la asignación queda oculta. --&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"slideNumberFormat": "<div class=\"progress-bar-container\">   <div class=\"progress-bar\" style=\"width: calc(%current% / %total% * 100%);\">   </div> </div>"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
